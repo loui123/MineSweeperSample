@@ -3,7 +3,7 @@ package com.loui.spring.model;
 import com.loui.spring.service.MineGenerator;
 /*
  * The MapSize means,
- * 		8 x 8 cells, 10 mines for "SMALL" game.
+ * 		9 x 9 cells, 10 mines for "SMALL" game.
  * 		16 x 16 cells, 40 mines for "MIDDLE" game.
  * 		30 x 16 cells, 99 mines for "LARGE" game.
  * 
@@ -12,14 +12,14 @@ import com.loui.spring.service.MineGenerator;
  *    the 1 value means the mine field.
  */
 public class MineSweeper {
-	private int[][] map = new int[8][8];
+	private int[][] map = new int[9][9];
 	
 	public MineSweeper(MapSize mapSize){
 		switch(mapSize) {
 			case SMALL:
 				asSmallCase();
 				break;
-			case MIDD:
+			case MIDDLE:
 				asMiddleCase();
 				break;
 			case LARGE:
@@ -38,23 +38,23 @@ public class MineSweeper {
 
 	private void asSmallCase() {
 		MineGenerator mineGenerator = new MineGenerator();
-		map = new int[8][8];
+		map = new int[9][9];
 		int[] minePositions = mineGenerator.generate(81, 10);
-		setMines(minePositions, 8, 8);
+		setMines(minePositions, 9, 9);
 	}
 
 	private void asMiddleCase() {
 		MineGenerator mineGenerator = new MineGenerator();
-		map = new int[15][15];
+		map = new int[16][16];
 		int[] minePositions = mineGenerator.generate(256, 40);
-		setMines(minePositions, 8, 8);
+		setMines(minePositions, 16, 16);
 	}
 
 	private void asLargeCase() {
 		MineGenerator mineGenerator = new MineGenerator();
-		map = new int[29][15];
+		map = new int[30][16];
 		int[] minePositions = mineGenerator.generate(480, 99);
-		setMines(minePositions, 8, 8);
+		setMines(minePositions, 30, 16);
 	}
 
 	private void setMines(int[] minePositions, int xSize, int ySize) {

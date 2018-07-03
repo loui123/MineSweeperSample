@@ -14,18 +14,17 @@ public class MineSweeperServiceImpl implements MineSweeperService{
 	
 	@Override
 	public MineSweeper createMineSweeper() {
-		MineSweeper mineSweeper = new MineSweeper();
-		return mineSweeper;
+		return new MineSweeper();
 	}
 
 	@Override
 	public MineSweeper createMineSweeper(MapSize mapSize) {
-		MineSweeper mineSweeper = new MineSweeper(mapSize);
-		return mineSweeper;
+		return new MineSweeper(mapSize);
 	}
 
 	@Override
 	public void printMineSweeper(MineSweeper mineSweeper) {
+        System.out.println("==========================");
 		 for (int[] arr : mineSweeper.getMap()) {
 	        System.out.println(Arrays.toString(arr));
 	     }
