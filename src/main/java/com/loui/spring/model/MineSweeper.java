@@ -30,7 +30,7 @@ public class MineSweeper {
 	}
 
 	private int[][] setMap(int xSize, int ySize, int mineNumber) {
-		MapGenerator mapGenerator = new MapGenerator(9, 9, 10);
+		MapGenerator mapGenerator = new MapGenerator(xSize, ySize, mineNumber);
 		return mapGenerator.generate();
 	}
 

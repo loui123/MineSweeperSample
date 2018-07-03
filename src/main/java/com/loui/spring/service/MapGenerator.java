@@ -15,29 +15,28 @@ public class MapGenerator {
 		MineGenerator mineGenerator = new MineGenerator();
 		int[][] map = new int[ySize][xSize];
 		int[] minePositions = mineGenerator.generate(xSize * ySize, mineNumber);
-		setMines(minePositions, map);
+		setMinesAndAnswers(minePositions, map);
 		return map;
 	}
 
-	private void setResultNumber(int[][] map, int x, int y)
-	{
-		if(x<0 || y<0 || x>=xSize || y>=ySize || map[y][x] == 9) return;
-		map[y][x]++;
-	}
-
-	private void setMines(int[] minePositions, int[][] map) {
+	private void setMinesAndAnswers(int[] minePositions, int[][] map) {
 		for(int i=0;i<minePositions.length;i++) {
 			int xDimension = minePositions[i] % xSize;
 			int yDimension = minePositions[i] / xSize;
 			map[yDimension][xDimension] = 9;
-			setResultNumber(map, xDimension-1, yDimension);
-			setResultNumber(map, xDimension+1, yDimension);
-			setResultNumber(map, xDimension, yDimension+1);
-			setResultNumber(map, xDimension, yDimension-1);
-			setResultNumber(map, xDimension-1, yDimension-1);
-			setResultNumber(map, xDimension+1, yDimension-1);
-			setResultNumber(map, xDimension-1, yDimension+1);
-			setResultNumber(map, xDimension+1, yDimension+1);
+			calculateAnswer(map, xDimension-1, yDimension);
+			calculateAnswer(map, xDimension+1, yDimension);
+			calculateAnswer(map, xDimension, yDimension+1);
+			calculateAnswer(map, xDimension, yDimension-1);
+			calculateAnswer(map, xDimension-1, yDimension-1);
+			calculateAnswer(map, xDimension+1, yDimension-1);
+			calculateAnswer(map, xDimension-1, yDimension+1);
+			calculateAnswer(map, xDimension+1, yDimension+1);
 		}
+	}
+
+	private void calculateAnswer(int[][] map, int x, int y) {
+		if(x<0 || y<0 || x>=xSize || y>=ySize || map[y][x] == 9) return;
+		map[y][x]++;
 	}
 }
