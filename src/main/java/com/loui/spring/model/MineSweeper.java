@@ -1,6 +1,6 @@
 package com.loui.spring.model;
 
-import com.loui.spring.service.MineGenerator;
+import com.loui.spring.service.MapGenerator;
 /*
  * The MapSize means,
  * 		9 x 9 cells, 10 mines for "SMALL" game.
@@ -9,59 +9,36 @@ import com.loui.spring.service.MineGenerator;
  * 
  * In the two dimension Map, 
  *    the 0 value means the safe field.
- *    the 1 value means the mine field.
+ *    the n value means the tip field.
+ *    the 9 value means the mine field.
  */
 public class MineSweeper {
-	private int[][] map = new int[9][9];
-	
-	public MineSweeper(MapSize mapSize){
-		switch(mapSize) {
+	private int[][] map;
+
+	public MineSweeper(MapSize mapSize) {
+		switch (mapSize) {
 			case SMALL:
-				asSmallCase();
+				map = setMap(9, 9, 10);
 				break;
 			case MIDDLE:
-				asMiddleCase();
+				map = setMap(16, 16, 40);
 				break;
 			case LARGE:
-				asLargeCase();
+				map = setMap(30, 16, 99);
 				break;
 		}
 	}
 
-	public MineSweeper(){
-		asSmallCase();
+	private int[][] setMap(int xSize, int ySize, int mineNumber) {
+		MapGenerator mapGenerator = new MapGenerator(9, 9, 10);
+		return mapGenerator.generate();
+	}
+
+	public MineSweeper() {
+		setMap(9, 9, 10);
 	}
 
 	public int[][] getMap() {
 		return map;
-	}
-
-	private void asSmallCase() {
-		MineGenerator mineGenerator = new MineGenerator();
-		map = new int[9][9];
-		int[] minePositions = mineGenerator.generate(81, 10);
-		setMines(minePositions, 9, 9);
-	}
-
-	private void asMiddleCase() {
-		MineGenerator mineGenerator = new MineGenerator();
-		map = new int[16][16];
-		int[] minePositions = mineGenerator.generate(256, 40);
-		setMines(minePositions, 16, 16);
-	}
-
-	private void asLargeCase() {
-		MineGenerator mineGenerator = new MineGenerator();
-		map = new int[30][16];
-		int[] minePositions = mineGenerator.generate(480, 99);
-		setMines(minePositions, 30, 16);
-	}
-
-	private void setMines(int[] minePositions, int xSize, int ySize) {
-		for(int i=0;i<minePositions.length;i++) {
-			int xDimension = minePositions[i] % xSize;
-			int yDimension = minePositions[i] / ySize;
-			map[xDimension][yDimension] = 1;
-		}
 	}
 }

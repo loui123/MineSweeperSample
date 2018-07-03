@@ -28,7 +28,7 @@ public class MineGenerator {
 	}
 
 	private int[] initSortedArray(int totalSize) {
-		int[] array = new int[totalSize-1];
+		int[] array = new int[totalSize];
 		for(int i=0;i<array.length;i++) {
 			array[i]=i;
 		}
