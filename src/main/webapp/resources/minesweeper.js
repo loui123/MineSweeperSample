@@ -12,82 +12,122 @@ const API_SETTINGS = {
 	}
 }
 
+const COMPONENTS ={
+	"TABLE": "<table id=\"mine_sweeper_table\" border-collapse: collapse; 	width: 770px; 	word-wrap: break-word; 	table-layout: fixed;>",
+	"EMPTY_IMAGE": `<img src="resources/image/empty.png" onclick="clickEmptyCell(this)" oncontextmenu="setAnswer(this)">`,
+	"ZERO_IMAGE": `<img src="resources/image/zero.png">`,
+	"ONE_IMAGE": `<img src="resources/image/one.png">`,
+	"TWO_IMAGE": `<img src="resources/image/two.png">`,
+	"THREE_IMAGE": `<img src="resources/image/three.png">`,
+	"FOUR_IMAGE": `<img src="resources/image/four.png">`,
+	"FIVE_IMAGE": `<img src="resources/image/five.png">`,
+	"SIX_IMAGE": `<img src="resources/image/six.png">`,
+	"SEVEN_IMAGE": `<img src="resources/image/sevevn.png">`,
+	"EIGHT_IMAGE": `<img src="resources/image/eight.png">`,
+	"ANSWER_IMAGE": `<img src="resources/image/answer.png">`,
+}
+
 let GAME_SCALE ={
 	"X_SIZE":9,
 	"Y_SIZE":9,
-	"MINES_AMOUNT":10
+	"MINES_AMOUNT":10,
+	"MAP":[0][0]
 } 
 
+function clickEmptyCell(cellImage){
+	let td = cellImage.parentNode;
+	if(td.innerHTML === COMPONENTS.ANSWER_IMAGE){
+		return;
+	}
+	let mineInfo = getMineInfo(parseInt(td.id.split('_')[1]));
+	switch(mineInfo){
+		case 0:
+			td.innerHTML = COMPONENTS.ZERO_IMAGE;
+			break;
+		case 1:
+			td.innerHTML = COMPONENTS.ONE_IMAGE;
+			break;
+		case 2:
+			td.innerHTML = COMPONENTS.TWO_IMAGE;
+			break;
+		case 3:
+			td.innerHTML = COMPONENTS.THREE_IMAGE;
+			break;
+		case 4:
+			td.innerHTML = COMPONENTS.FOUR_IMAGE;
+			break;
+		case 5:
+			td.innerHTML = COMPONENTS.FIVE_IMAGE;
+			break;
+		case 6:
+			td.innerHTML = COMPONENTS.SIX_IMAGE;
+			break;
+		case 7:
+			td.innerHTML = COMPONENTS.SEVEN_IMAGE;
+			break;
+		case 8:
+			td.innerHTML = COMPONENTS.EIGHT_IMAGE;
+			break;
+		case 9:
+			alert('game over');
+			getMapData();
+			break;
+	}
+}
+
+function isGameWin(){
+
+}
+
+function setAnswer(cellImage){
+	let td = cellImage.parentNode;
+	td.innerHTML = COMPONENTS.ANSWER_IMAGE;
+}
+
 function getMapData() {
-	$.ajax(API_SETTINGS).done(function (response) {
-		var mapDetail = JSON.parse(response);
-		setGameScale(mapDetail);
-		generateTable(mapDetail);
+	$.ajax(API_SETTINGS).done(async function (response) {
+		var map = JSON.parse(response);
+		await setGameScale(map);
+		generateTable();
 	});
 }
 
-function setGameScale(mapDetail) {
-	GAME_SCALE.Y_SIZE =mapDetail.length;
-	GAME_SCALE.X_SIZE =mapDetail[0].length;
+function generateTable() {	
+	$("#mine_sweeper").empty();
+	$("#mine_sweeper").append(COMPONENTS.TABLE);
+	setEmptyCells();
+}
+
+function setEmptyCells() {
+	for (i = 0; i < GAME_SCALE.MAP.length; i++) {
+		let tableRowInfo = "";
+		for (j = 0; j <  GAME_SCALE.MAP[0].length; j++) {
+			tableRowInfo += `<td width="40px" id="table_${toMapValue(j,i)}"> ${COMPONENTS.EMPTY_IMAGE} </td>`;
+		}
+		$("#mine_sweeper_table").append(`<tr> ${tableRowInfo} </tr>`);
+	}
+}
+
+function toMapValue(x,y){
+	return y*GAME_SCALE.X_SIZE+x;
+}
+
+function getMineInfo(value){
+	let x = value % GAME_SCALE.X_SIZE;
+	let y = parseInt(value / GAME_SCALE.X_SIZE);
+	return GAME_SCALE.MAP[y][x];
+}
+
+function setGameScale(mapArray) {
+	GAME_SCALE.Y_SIZE =mapArray.length;
+	GAME_SCALE.X_SIZE =mapArray[0].length;
 	GAME_SCALE.MINES_AMOUNT = 0;
-	for (i = 0; i < mapDetail.length; i++) {
-		for (j = 0; j < mapDetail[0].length; j++) {
-			if(mapDetail[i][j]==9){
+	GAME_SCALE.MAP = mapArray;
+	for (i = 0; i < GAME_SCALE.MAP.length; i++) {
+		for (j = 0; j < GAME_SCALE.MAP[0].length; j++) {
+			if(GAME_SCALE.MAP[i][j]==9){
 				GAME_SCALE.MINES_AMOUNT += 1;
 			}
 		}
 	}
-}
-
-async function generateTable(mapDetail) {	
-	var mineSweeperCanvas = $("#mine_sweeper");
-	mineSweeperCanvas.empty();
-	mineSweeperCanvas.append("<table id=\"mine_sweeper_table\" border-collapse: collapse; 	width: 770px; 	word-wrap: break-word; 	table-layout: fixed;>");
-	var mineSweeperTable = $("#mine_sweeper_table");
-
-
-	for (i = 0; i < mapDetail.length; i++) {
-		var tableRowInfo = "";
-		for (j = 0; j < mapDetail[0].length; j++) {
-			tableRowInfo += `<td width="40px"> ${setCellType(mapDetail[i][j])} </td>`;
-		}
-		mineSweeperTable.append(`<tr> ${tableRowInfo} </tr>`);
-	}
-}
-
-function setCellType(cellType){
-	let imageName = cellType;
-	switch(cellType){
-		case 0:
-			imageName = "empty.png";
-			break;
-		case 1:
-			imageName = "one.png";
-			break;
-		case 2:
-			imageName = "two.png";
-			break;
-		case 3:
-			imageName = "three.png";
-			break;
-		case 4:
-			imageName = "four.png";
-			break;
-		case 5:
-			imageName = "five.png";
-			break;
-		case 6:
-			imageName = "six.png";
-			break;
-		case 7:
-			imageName = "seven.png";
-			break;
-		case 8:
-			imageName = "eight.png";
-			break;
-		case 9:
-			imageName = "answer.png";
-			break;
-	}
-	return `<img src=\"resources/image/${imageName}/">`;
 }
