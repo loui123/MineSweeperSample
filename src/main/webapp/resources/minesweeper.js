@@ -39,10 +39,21 @@ function clickEmptyCell(cellImage){
 	if(td.innerHTML === COMPONENTS.ANSWER_IMAGE){
 		return;
 	}
-	let mineInfo = getMineInfo(parseInt(td.id.split('_')[1]));
+	let position = parseInt(td.id.split('_')[1]);
+	openCell(position);
+	
+}
+
+function openCell(position){
+	let mineInfo = getMineInfo(position);
+	let td = $(`#table_${position}`)[0];
+	if(td.innerHTML !== COMPONENTS.EMPTY_IMAGE){
+		return;
+	}
 	switch(mineInfo){
 		case 0:
 			td.innerHTML = COMPONENTS.ZERO_IMAGE;
+			openNearbyCell(position);
 			break;
 		case 1:
 			td.innerHTML = COMPONENTS.ONE_IMAGE;
@@ -74,6 +85,22 @@ function clickEmptyCell(cellImage){
 			return; 
 	}	
 	checkGameWin()
+}
+
+function openNearbyCell(position){
+	let isOnTopBoundary = position <= GAME_SCALE.X_SIZE;
+	let isOnLeftBoundary = (position % GAME_SCALE.X_SIZE) === 0;
+	let isOnDownBoundary = position >= (GAME_SCALE.X_SIZE*(GAME_SCALE.Y_SIZE-1)) ;
+	let isOnRightBoundary = (position % GAME_SCALE.X_SIZE) === (GAME_SCALE.X_SIZE-1);
+	
+	isOnLeftBoundary || isOnTopBoundary ? undefined : openCell(position-GAME_SCALE.X_SIZE-1);
+	isOnTopBoundary ? undefined : openCell(position-GAME_SCALE.X_SIZE);
+	isOnRightBoundary || isOnTopBoundary ? undefined : openCell(position-GAME_SCALE.X_SIZE+1);
+	isOnLeftBoundary ? undefined : openCell(position-1);
+	isOnRightBoundary ? undefined : openCell(position+1);
+	isOnLeftBoundary || isOnDownBoundary ? undefined : openCell(position+GAME_SCALE.X_SIZE-1);
+	isOnDownBoundary ? undefined : openCell(position+GAME_SCALE.X_SIZE);
+	isOnRightBoundary || isOnDownBoundary ? undefined : openCell(position+GAME_SCALE.X_SIZE+1);
 }
 
 function isGameWin(){	
