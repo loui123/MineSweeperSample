@@ -35,49 +35,49 @@ let GAME_SCALE ={
 } 
 
 function clickEmptyCell(cellImage){
-	let td = cellImage.parentNode;
-	if(td.innerHTML === COMPONENTS.ANSWER_IMAGE){
+	let cellObject = cellImage.parentNode;
+	if(cellObject.innerHTML === COMPONENTS.ANSWER_IMAGE){
 		return;
 	}
-	let position = parseInt(td.id.split('_')[1]);
+	let position = parseInt(cellObject.id.split('_')[1]);
 	openCell(position);
 	
 }
 
 function openCell(position){
 	let mineInfo = getMineInfo(position);
-	let td = $(`#table_${position}`)[0];
-	if(td.innerHTML !== COMPONENTS.EMPTY_IMAGE){
+	let cellObject = $(`#table_${position}`)[0];
+	if(cellObject.innerHTML !== COMPONENTS.EMPTY_IMAGE){
 		return;
 	}
 	switch(mineInfo){
 		case 0:
-			td.innerHTML = COMPONENTS.ZERO_IMAGE;
+			cellObject.innerHTML = COMPONENTS.ZERO_IMAGE;
 			openNearbyCell(position);
 			break;
 		case 1:
-			td.innerHTML = COMPONENTS.ONE_IMAGE;
+			cellObject.innerHTML = COMPONENTS.ONE_IMAGE;
 			break;
 		case 2:
-			td.innerHTML = COMPONENTS.TWO_IMAGE;
+			cellObject.innerHTML = COMPONENTS.TWO_IMAGE;
 			break;
 		case 3:
-			td.innerHTML = COMPONENTS.THREE_IMAGE;
+			cellObject.innerHTML = COMPONENTS.THREE_IMAGE;
 			break;
 		case 4:
-			td.innerHTML = COMPONENTS.FOUR_IMAGE;
+			cellObject.innerHTML = COMPONENTS.FOUR_IMAGE;
 			break;
 		case 5:
-			td.innerHTML = COMPONENTS.FIVE_IMAGE;
+			cellObject.innerHTML = COMPONENTS.FIVE_IMAGE;
 			break;
 		case 6:
-			td.innerHTML = COMPONENTS.SIX_IMAGE;
+			cellObject.innerHTML = COMPONENTS.SIX_IMAGE;
 			break;
 		case 7:
-			td.innerHTML = COMPONENTS.SEVEN_IMAGE;
+			cellObject.innerHTML = COMPONENTS.SEVEN_IMAGE;
 			break;
 		case 8:
-			td.innerHTML = COMPONENTS.EIGHT_IMAGE;
+			cellObject.innerHTML = COMPONENTS.EIGHT_IMAGE;
 			break;
 		case 9:
 			alert('game over');
@@ -108,10 +108,10 @@ function isGameWin(){
 	let emptyCount = 0;
 	for (i = 0; i < GAME_SCALE.MAP.length; i++) {
 		for (j = 0; j <  GAME_SCALE.MAP[0].length; j++) {
-			if($(`#table_${toMapValue(i,j)}`).html() === COMPONENTS.ANSWER_IMAGE){
+			if($(`#table_${toMapValue(i,j)}`)[0].innerHTML === COMPONENTS.ANSWER_IMAGE){
 				answerCount += 1;
 			}
-			if($(`#table_${toMapValue(i,j)}`).html() === COMPONENTS.EMPTY_IMAGE){
+			if($(`#table_${toMapValue(i,j)}`)[0].innerHTML === COMPONENTS.EMPTY_IMAGE){
 				emptyCount += 1;
 			}
 		}
@@ -130,11 +130,11 @@ function checkGameWin(){
 }
 
 function setAnswer(cellImage){
-	let td = cellImage.parentNode;
-	if(td.innerHTML === COMPONENTS.ANSWER_IMAGE){
-		td.innerHTML = COMPONENTS.EMPTY_IMAGE;
-	}else if(td.innerHTML === COMPONENTS.EMPTY_IMAGE){
-		td.innerHTML = COMPONENTS.ANSWER_IMAGE;
+	let cellObject = cellImage.parentNode;
+	if(cellObject.innerHTML === COMPONENTS.ANSWER_IMAGE){
+		cellObject.innerHTML = COMPONENTS.EMPTY_IMAGE;
+	}else if(cellObject.innerHTML === COMPONENTS.EMPTY_IMAGE){
+		cellObject.innerHTML = COMPONENTS.ANSWER_IMAGE;
 	}
 	checkGameWin();
 }
