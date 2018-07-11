@@ -24,7 +24,7 @@ const COMPONENTS ={
 	"SIX_IMAGE": `<img src="resources/image/six.png">`,
 	"SEVEN_IMAGE": `<img src="resources/image/sevevn.png">`,
 	"EIGHT_IMAGE": `<img src="resources/image/eight.png">`,
-	"ANSWER_IMAGE": `<img src="resources/image/answer.png">`,
+	"ANSWER_IMAGE": `<img src="resources/image/answer.png" oncontextmenu="setAnswer(this)">`,
 }
 
 let GAME_SCALE ={
@@ -71,17 +71,45 @@ function clickEmptyCell(cellImage){
 		case 9:
 			alert('game over');
 			getMapData();
-			break;
-	}
+			return; 
+	}	
+	checkGameWin()
 }
 
-function isGameWin(){
+function isGameWin(){	
+	let answerCount = 0;
+	let emptyCount = 0;
+	for (i = 0; i < GAME_SCALE.MAP.length; i++) {
+		for (j = 0; j <  GAME_SCALE.MAP[0].length; j++) {
+			if($(`#table_${toMapValue(i,j)}`).html() === COMPONENTS.ANSWER_IMAGE){
+				answerCount += 1;
+			}
+			if($(`#table_${toMapValue(i,j)}`).html() === COMPONENTS.EMPTY_IMAGE){
+				emptyCount += 1;
+			}
+		}
+	}
+	if(emptyCount === 0 && answerCount === GAME_SCALE.MINES_AMOUNT){
+		return true;
+	}
+	return false;
+}
 
+function checkGameWin(){
+	if(isGameWin()){
+		alert('Game Win!!!');
+		getMapData();
+	}
 }
 
 function setAnswer(cellImage){
 	let td = cellImage.parentNode;
-	td.innerHTML = COMPONENTS.ANSWER_IMAGE;
+	if(td.innerHTML === COMPONENTS.ANSWER_IMAGE){
+		td.innerHTML = COMPONENTS.EMPTY_IMAGE;
+	}else if(td.innerHTML === COMPONENTS.EMPTY_IMAGE){
+		td.innerHTML = COMPONENTS.ANSWER_IMAGE;
+	}
+	checkGameWin();
 }
 
 function getMapData() {
@@ -102,7 +130,7 @@ function setEmptyCells() {
 	for (i = 0; i < GAME_SCALE.MAP.length; i++) {
 		let tableRowInfo = "";
 		for (j = 0; j <  GAME_SCALE.MAP[0].length; j++) {
-			tableRowInfo += `<td width="40px" id="table_${toMapValue(j,i)}"> ${COMPONENTS.EMPTY_IMAGE} </td>`;
+			tableRowInfo += `<td width="40px" id="table_${toMapValue(j,i)}">${COMPONENTS.EMPTY_IMAGE}</td>`;
 		}
 		$("#mine_sweeper_table").append(`<tr> ${tableRowInfo} </tr>`);
 	}
