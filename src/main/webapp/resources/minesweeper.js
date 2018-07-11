@@ -4,11 +4,10 @@
 const API_SETTINGS = {
 	"async": true,
 	"crossDomain": true,
-	"url": "http://localhost:8080/game",
+	"url": "/game",
 	"method": "GET",
 	"headers": {
-		"Cache-Control": "no-cache",
-		"Postman-Token": "586cd781-cc26-4b25-834a-cd5aa6498282"
+		"Cache-Control": "no-cache"
 	}
 }
 
