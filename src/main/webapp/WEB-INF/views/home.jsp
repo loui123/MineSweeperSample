@@ -1,14 +1,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
+<script src="resources/minesweeper.js"></script>
+<script src="resources/vendor/jquery-3.3.1.min.js"></script>
 <html>
 <head>
-	<title>Home</title>
+	<title>MineSweeper</title>
 </head>
 <body>
 <h1>
-	Hello world!  
+	Welcome to MineSweeper!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+<button type="submit" onclick="getMapData()">Initialize</button>
+<div id="mine_sweeper"></div>
+
 </body>
 </html>

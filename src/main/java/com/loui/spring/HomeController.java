@@ -4,10 +4,13 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.loui.spring.model.MapSize;
 import com.loui.spring.model.MineSweeper;
@@ -32,9 +35,9 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/game", method = RequestMethod.GET)
-	public String game() {
+	public @ResponseBody String game() {
 		MineSweeper mineSweeper = mineSweeperService.createMineSweeper(MapSize.SMALL);
-		mineSweeperService.printMineSweeper(mineSweeper);
-		return "home";
+		JSONArray mapArray = new JSONArray(mineSweeper.getMap());
+		return mapArray.toString();
 	}	
 }

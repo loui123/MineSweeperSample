@@ -1,5 +1,11 @@
 package com.loui.spring.service;
 
+/*
+* In the two dimension Map, 
+*    the 0 value means the safe field.
+*    the 1~8 value means the tip field.
+*    the 9 value means the mine field.
+*/
 public class MapGenerator {
 	private final int xSize;
 	private final int ySize;
@@ -24,15 +30,19 @@ public class MapGenerator {
 			int xDimension = minePositions[i] % xSize;
 			int yDimension = minePositions[i] / xSize;
 			map[yDimension][xDimension] = 9;
-			calculateAnswer(map, xDimension-1, yDimension);
-			calculateAnswer(map, xDimension+1, yDimension);
-			calculateAnswer(map, xDimension, yDimension+1);
-			calculateAnswer(map, xDimension, yDimension-1);
-			calculateAnswer(map, xDimension-1, yDimension-1);
-			calculateAnswer(map, xDimension+1, yDimension-1);
-			calculateAnswer(map, xDimension-1, yDimension+1);
-			calculateAnswer(map, xDimension+1, yDimension+1);
+			setAnswers(map, xDimension, yDimension);
 		}
+	}
+
+	private void setAnswers(int[][] map, int xDimension, int yDimension) {
+		calculateAnswer(map, xDimension-1, yDimension);
+		calculateAnswer(map, xDimension+1, yDimension);
+		calculateAnswer(map, xDimension, yDimension+1);
+		calculateAnswer(map, xDimension, yDimension-1);
+		calculateAnswer(map, xDimension-1, yDimension-1);
+		calculateAnswer(map, xDimension+1, yDimension-1);
+		calculateAnswer(map, xDimension-1, yDimension+1);
+		calculateAnswer(map, xDimension+1, yDimension+1);
 	}
 
 	private void calculateAnswer(int[][] map, int x, int y) {

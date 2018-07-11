@@ -1,6 +1,7 @@
 package com.loui.spring.model;
 
 import com.loui.spring.service.MapGenerator;
+
 /*
  * The MapSize means,
  * 		9 x 9 cells, 10 mines for "SMALL" game.
@@ -29,16 +30,16 @@ public class MineSweeper {
 		}
 	}
 
-	private int[][] setMap(int xSize, int ySize, int mineNumber) {
-		MapGenerator mapGenerator = new MapGenerator(xSize, ySize, mineNumber);
-		return mapGenerator.generate();
-	}
-
 	public MineSweeper() {
 		setMap(9, 9, 10);
 	}
 
 	public int[][] getMap() {
 		return map;
+	}
+
+	private int[][] setMap(int xSize, int ySize, int mineNumber) {
+		MapGenerator mapGenerator = new MapGenerator(xSize, ySize, mineNumber);
+		return mapGenerator.generate();
 	}
 }
