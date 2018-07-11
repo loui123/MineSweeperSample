@@ -34,6 +34,10 @@ let GAME_SCALE ={
 	"MAP":[0][0]
 } 
 
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+}, false);
+
 function clickEmptyCell(cellImage){
 	let cellObject = cellImage.parentNode;
 	if(cellObject.innerHTML === COMPONENTS.ANSWER_IMAGE){
