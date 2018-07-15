@@ -31,7 +31,7 @@ public class MineSweeper {
 	}
 
 	public MineSweeper() {
-		setMap(9, 9, 10);
+		map = setMap(9, 9, 10);
 	}
 
 	public int[][] getMap() {

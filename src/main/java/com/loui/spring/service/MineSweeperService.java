@@ -7,6 +7,4 @@ public interface MineSweeperService {
 	public MineSweeper createMineSweeper();
 
 	public MineSweeper createMineSweeper(MapSize mapSize);
-
-	public void printMineSweeper(MineSweeper mineSweeper);	
 }
